@@ -46,9 +46,9 @@ service.interceptors.response.use(
   error => {
     // 4002:需要认证
     if (error.response.data.code === 4002) {
-      MessageBox.confirm('需要登录！', '警告', {
-        confirmButtonText: '登录',
-        cancelButtonText: '取消',
+      MessageBox.confirm('Necessário entrar!', 'avisar', {
+        confirmButtonText: 'Conecte-se',
+        cancelButtonText: 'Cancelar',
         type: 'warning'
       }).then(() => {
         store.dispatch('FedLogout').then(() => {

@@ -9,14 +9,14 @@
             icon="el-icon-refresh"
             v-if="hasPermission('role:list')"
             @click.native.prevent="getRoleList"
-          >刷新</el-button>
+          >atualizar</el-button>
           <el-button
             type="primary"
             size="mini"
             icon="el-icon-plus"
             v-if="hasPermission('role:add')"
             @click.native.prevent="showAddRoleDialog"
-          >添加角色</el-button>
+          >Adicionar função</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,15 +33,15 @@
           <span v-text="getTableIndex(scope.$index)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="角色名" align="center" prop="name" />
-      <el-table-column label="创建时间" align="center" prop="createTime">
+      <el-table-column label="nome do personagem" align="center" prop="name" />
+      <el-table-column label="tempo de criação" align="center" prop="createTime">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.createTime) }}</template>
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="updateTime">
+      <el-table-column label="Mude o horário" align="center" prop="updateTime">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.updateTime) }}</template>
       </el-table-column>
       <el-table-column
-        label="管理"
+        label="gerir"
         align="center"
         v-if="hasPermission('role:detail') || hasPermission('role:update') || hasPermission('role:delete')"
       >
@@ -51,19 +51,19 @@
             size="mini"
             v-if="hasPermission('role:detail')"
             @click.native.prevent="showRoleDialog(scope.$index)"
-          >查看</el-button>
+          >Verificar</el-button>
           <el-button
             type="warning"
             size="mini"
-            v-if="hasPermission('role:update') && scope.row.name !== '超级管理员'"
+            v-if="hasPermission('role:update') && scope.row.name !== 'superadministrador'"
             @click.native.prevent="showUpdateRoleDialog(scope.$index)"
-          >修改</el-button>
+          >Rever</el-button>
           <el-button
             type="danger"
             size="mini"
-            v-if="hasPermission('role:delete') && scope.row.name !== '超级管理员'"
+            v-if="hasPermission('role:delete') && scope.row.name !== 'superadministrador'"
             @click.native.prevent="removeRole(scope.$index)"
-          >删除</el-button>
+          >excluir</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -167,7 +167,7 @@ export default {
      */
     const validateRoleName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('角色名不能为空'))
+        callback(new Error('O nome da função não pode ficar vazio'))
       } else {
         callback()
       }
@@ -184,8 +184,8 @@ export default {
       dialogStatus: 'add',
       dialogFormVisible: false,
       textMap: {
-        update: '修改角色',
-        add: '添加角色'
+        update: 'Modificar função',
+        add: 'Adicionar função'
       },
       btnLoading: false,
       tempRole: {
@@ -210,7 +210,7 @@ export default {
       listResourcePermission().then(response => {
         this.permissionList = response.data.list
       }).catch(res => {
-        this.$message.error('加载权限列表失败')
+        this.$message.error('Falha ao carregar a lista de permissões')
       })
     },
     /**
@@ -223,7 +223,7 @@ export default {
         this.total = response.data.total
         this.listLoading = false
       }).catch(res => {
-        this.$message.error('加载角色列表失败')
+        this.$message.error('Falha ao carregar a lista de caracteres')
       })
     },
     /**
@@ -316,15 +316,15 @@ export default {
         ) {
           this.btnLoading = true
           addRole(this.tempRole).then(() => {
-            this.$message.success('添加成功')
+            this.$message.success('Adicionado com sucesso')
             this.getRoleList()
             this.dialogFormVisible = false
             this.btnLoading = false
           }).catch(res => {
-            this.$message.error('添加角色失败')
+            this.$message.error('Falha ao adicionar função')
           })
         } else {
-          console.log('表单无效')
+          console.log('O formulário é inválido')
         }
       })
     },
@@ -339,15 +339,15 @@ export default {
         ) {
           this.btnLoading = true
           updateRole(this.tempRole).then(() => {
-            this.$message.success('更新成功')
+            this.$message.success('atualização completa')
             this.getRoleList()
             this.dialogFormVisible = false
             this.btnLoading = false
           }).catch(res => {
-            this.$message.error('更新角色失败')
+            this.$message.error('Falha ao atualizar a função')
           })
         } else {
-          console.log('表单无效')
+          console.log('O formulário é inválido')
         }
       })
     },
@@ -360,7 +360,7 @@ export default {
     isRoleNameUnique(id, name) {
       for (let i = 0; i < this.roleList.length; i++) {
         if (this.roleList[i].id !== id && this.roleList[i].name === name) {
-          this.$message.error('角色名已存在')
+          this.$message.error('O nome da regra já existe')
           return false
         }
       }
@@ -372,20 +372,20 @@ export default {
      * @returns {boolean}
      */
     removeRole(index) {
-      this.$confirm('删除该角色？', '警告', {
-        confirmButtonText: '是',
-        cancelButtonText: '否',
+      this.$confirm('Excluir esta função?', 'Aviso', {
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'não',
         type: 'warning'
       }).then(() => {
         const roleId = this.roleList[index].id
         remove(roleId).then(() => {
-          this.$message.success('删除成功')
+          this.$message.success('Excluído com sucesso')
           this.getRoleList()
         }).catch(() => {
-          this.$message.error('删除失败')
+          this.$message.error('Falha ao excluir')
         })
       }).catch(() => {
-        this.$message.info('已取消删除')
+        this.$message.info('Recuperado')
       })
     },
     /**

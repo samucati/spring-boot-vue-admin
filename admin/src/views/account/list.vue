@@ -9,30 +9,30 @@
             icon="el-icon-refresh"
             v-if="hasPermission('account:list')"
             @click.native.prevent="getAccountList"
-          >刷新</el-button>
+          >Atualizar</el-button>
           <el-button
             type="primary"
             size="mini"
             icon="el-icon-plus"
             v-if="hasPermission('account:add')"
             @click.native.prevent="showAddAccountDialog"
-          >添加账号</el-button>
+          >Adicionar Conta</el-button>
         </el-form-item>
 
         <span v-if="hasPermission('account:search')">
           <el-form-item>
-            <el-input v-model="search.accountName" placeholder="账户名"></el-input>
+            <el-input v-model="search.accountName" placeholder="Nome da conta"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="search.roleName" placeholder="角色">
-              <el-option label="请选择" value />
+            <el-select v-model="search.roleName" placeholder="Função">
+              <el-option label="Por favor escolha" value />
               <div v-for="(role, index) in roleList" :key="index">
                 <el-option :label="role.name" :value="role.name"/>
               </div>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="searchBy" :loading="btnLoading">查询</el-button>
+            <el-button type="primary" @click="searchBy" :loading="btnLoading">Investigar</el-button>
           </el-form-item>
         </span>
       </el-form>
@@ -50,16 +50,16 @@
           <span v-text="getIndex(scope.$index)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="账户名" align="center" prop="name" width="180" />
-      <el-table-column label="邮箱" align="center" prop="email" width="200" />
-      <el-table-column label="注册时间" align="center" prop="registerTime" width="160">
+      <el-table-column label="Nome da conta" align="center" prop="name" width="180" />
+      <el-table-column label="Correspondência" align="center" prop="email" width="200" />
+      <el-table-column label="Horário de registro" align="center" prop="registerTime" width="160">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.registerTime) }}</template>
       </el-table-column>
-      <el-table-column label="最后登录时间" align="center" prop="loginTime" width="160">
-        <template slot-scope="scope">{{ scope.row.loginTime ? unix2CurrentTime(scope.row.loginTime) : '从未登录' }}</template>
+      <el-table-column label="última hora de login" align="center" prop="loginTime" width="160">
+        <template slot-scope="scope">{{ scope.row.loginTime ? unix2CurrentTime(scope.row.loginTime) : 'nunca logado' }}</template>
       </el-table-column>
-      <el-table-column label="角色" align="center" prop="roleName" width="120" />
-      <el-table-column label="管理" align="center"
+      <el-table-column label="Função" align="center" prop="roleName" width="120" />
+      <el-table-column label="gerir" align="center"
         v-if="hasPermission('role:update') || hasPermission('account:update') || hasPermission('account:delete')">
         <template slot-scope="scope">
           <el-button
@@ -103,7 +103,7 @@
         :rules="createRules"
         ref="tmpAccount"
       >
-        <el-form-item label="账户名" prop="name" required>
+        <el-form-item label="Nome da conta" prop="name" required>
           <el-input
             type="text"
             prefix-icon="el-icon-edit"
@@ -112,7 +112,7 @@
             v-model="tmpAccount.name"
           />
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="Correspondência" prop="email">
           <el-input
             type="text"
             prefix-icon="el-icon-message"
@@ -121,7 +121,7 @@
             v-model="tmpAccount.email"
           />
         </el-form-item>
-        <el-form-item label="密码" prop="password" required
+        <el-form-item label="Senha" prop="password" required
         v-if="dialogStatus !== 'updateRole'">
           <el-input
             type="password"
@@ -131,38 +131,38 @@
             v-if="dialogStatus !== 'updateRole'"
           />
         </el-form-item>
-        <el-form-item label="角色"
+        <el-form-item label="Função"
           v-if="dialogStatus === 'updateRole'">
-          <el-select placeholder="请选择" v-model="tmpAccount.roleId">
+          <el-select placeholder="Por favor escolha" v-model="tmpAccount.roleId">
             <el-option v-for="item in roleList" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click.native.prevent="dialogFormVisible = false">取消</el-button>
+        <el-button @click.native.prevent="dialogFormVisible = false">Cancelar</el-button>
         <el-button
           type="danger"
           v-if="dialogStatus === 'add'"
           @click.native.prevent="$refs['tmpAccount'].resetFields()"
-        >重置</el-button>
+        >Redefinir</el-button>
         <el-button
           type="success"
           v-if="dialogStatus === 'add'"
           :loading="btnLoading"
           @click.native.prevent="addAccount"
-        >添加</el-button>
+        >adicionar à</el-button>
         <el-button
           type="primary"
           v-if="dialogStatus === 'update'"
           :loading="btnLoading"
           @click.native.prevent="updateAccount"
-        >更新资料</el-button>
+        >Atualizações</el-button>
         <el-button
           type="primary"
           v-if="dialogStatus === 'updateRole'"
           :loading="btnLoading"
           @click.native.prevent="updateAccountRole"
-        >更新角色</el-button>
+        >atualizar função</el-button>
       </div>
     </el-dialog>
   </div>
@@ -186,21 +186,21 @@ export default {
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!isValidateEmail(value)) {
-        callback(new Error('邮箱格式错误'))
+        callback(new Error('Erro de formato de e-mail'))
       } else {
         callback()
       }
     }
     const validateName = (rule, value, callback) => {
       if (value.length < 3) {
-        callback(new Error('账户名长度必须 ≥ 3'))
+        callback(new Error('O comprimento do nome da conta deve ser ≥ 3'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度必须 ≥ 6'))
+        callback(new Error('O comprimento da senha deve ser ≥ 6'))
       } else {
         callback()
       }
@@ -218,9 +218,9 @@ export default {
       dialogStatus: 'add',
       dialogFormVisible: false,
       textMap: {
-        updateRole: '修改账号角色',
-        update: '修改账号',
-        add: '添加账号'
+        updateRole: 'Modificar função da conta',
+        update: 'Modificar conta',
+        add: 'Adicionar Conta'
       },
       btnLoading: false, // 按钮等待动画
       tmpAccount: {
@@ -257,7 +257,7 @@ export default {
       getRoleList().then(response => {
         this.roleList = response.data.list
       }).catch(res => {
-        this.$message.error('加载角色失败')
+        this.$message.error('Falha ao carregar o caractere')
       })
     },
     /**
@@ -276,7 +276,7 @@ export default {
         }
         this.listLoading = false
       }).catch(res => {
-        this.$message.error('加载账户列表失败')
+        this.$message.error('Falha ao carregar a lista de contas')
       })
     },
     searchBy() {
@@ -290,7 +290,7 @@ export default {
         this.listLoading = false
         this.btnLoading = false
       }).catch(res => {
-        this.$message.error('搜索失败')
+        this.$message.error('Falha na pesquisa')
       })
     },
     /**
@@ -339,12 +339,12 @@ export default {
         if (valid && this.isUniqueDetail(this.tmpAccount)) {
           this.btnLoading = true
           register(this.tmpAccount).then(() => {
-            this.$message.success('添加成功')
+            this.$message.success('Adicionado com sucesso')
             this.getAccountList()
             this.dialogFormVisible = false
             this.btnLoading = false
           }).catch(res => {
-            this.$message.error('添加账户失败')
+            this.$message.error('Falha ao adicionar conta')
             this.btnLoading = false
           })
         }
@@ -368,11 +368,11 @@ export default {
      */
     updateAccount() {
       updateAccount(this.tmpAccount).then(() => {
-        this.$message.success('更新成功')
+        this.$message.success('atualização completa')
         this.getAccountList()
         this.dialogFormVisible = false
       }).catch(res => {
-        this.$message.error('更新失败')
+        this.$message.error('atualização falhou')
       })
     },
     /**
@@ -393,11 +393,11 @@ export default {
      */
     updateAccountRole() {
       updateAccountRole(this.tmpAccount).then(() => {
-        this.$message.success('更新成功')
+        this.$message.success('atualização completa')
         this.getAccountList()
         this.dialogFormVisible = false
       }).catch(res => {
-        this.$message.error('更新失败')
+        this.$message.error('atualização falhou')
       })
     },
     /**
@@ -407,11 +407,11 @@ export default {
     isUniqueDetail(account) {
       for (let i = 0; i < this.accountList.length; i++) {
         if (this.accountList[i].name === account.name) {
-          this.$message.error('账户名已存在')
+          this.$message.error('O nome da conta já existe')
           return false
         }
         if (this.accountList[i].email === account.email) {
-          this.$message.error('邮箱已存在')
+          this.$message.error('e-mail já existe')
           return false
         }
       }
@@ -422,18 +422,18 @@ export default {
      * @param index 用户下标
      */
     removeAccount(index) {
-      this.$confirm('删除该账户？', '警告', {
-        confirmButtonText: '是',
-        cancelButtonText: '否',
+      this.$confirm('Excluir esta conta?', 'Aviso', {
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'não',
         type: 'warning'
       }).then(() => {
         const id = this.accountList[index].id
         remove(id).then(() => {
-          this.$message.success('删除成功')
+          this.$message.success('excluído com sucesso')
           this.getAccountList()
         })
       }).catch(() => {
-        this.$message.info('已取消删除')
+        this.$message.info('Recuperado')
       })
     }
   }

@@ -55,7 +55,7 @@ export function nowDifference(unixTimeEnd) {
     if (hour <= 9) hour = '0' + hour
     if (minute <= 9) minute = '0' + minute
     if (second <= 9) second = '0' + second
-    return day + '天' + hour + '小时' + minute + '分钟' + second + '秒'
+    return day + 'Dia' + hour + 'Hora' + minute + 'Minuto' + second + 'Segundo'
   } else {
     return null
   }

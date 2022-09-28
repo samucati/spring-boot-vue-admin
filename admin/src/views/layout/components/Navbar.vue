@@ -9,10 +9,10 @@
       </span>
       <el-dropdown-menu slot="dropdown">
         <router-link class="inlineBlock" to="/account/detail">
-          <el-dropdown-item>账户中心</el-dropdown-item>
+          <el-dropdown-item>Central de contas</el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">注销</span>
+          <span @click="logout" style="display:block;">sair</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

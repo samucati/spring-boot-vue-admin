@@ -4,6 +4,9 @@
 
 ## Build Setup
 
+npm config set python "C:\Python27\python.exe"
+npm cache clear --force
+
 ``` bash
 # install dependencies
 npm install

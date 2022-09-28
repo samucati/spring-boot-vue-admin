@@ -1,5 +1,9 @@
 # RESTFul API
 
+docker pull redis
+
+docker run --name some-redis -d redis
+
 主要介绍后端 API 的角色权限控制。
 
 ## 数据库设计

@@ -9,13 +9,13 @@
     >
       <el-row :gutter="18">
         <el-col :span="9">
-          <el-form-item label="账户名" prop="name">
+          <el-form-item label="Nome da conta" prop="name">
             <el-input v-if="toUpdate" v-model="tmpAccount.name" />
             <span v-else>{{ tmpAccount.name }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="9">
-          <el-form-item label="邮箱" prop="email">
+          <el-form-item label="Correspondência" prop="email">
             <el-input v-if="toUpdate" v-model="tmpAccount.email" />
             <span v-else>{{ tmpAccount.email }}</span>
           </el-form-item>
@@ -23,10 +23,10 @@
       </el-row>
       <el-row :gutter="18">
         <el-col :span="9">
-          <el-form-item label="注册时间"><span>{{ unix2CurrentTime(account.registerTime) }}</span></el-form-item>
+          <el-form-item label="Horário de registro"><span>{{ unix2CurrentTime(account.registerTime) }}</span></el-form-item>
         </el-col>
         <el-col :span="9">
-          <el-form-item label="最后登录时间"><span>{{ unix2CurrentTime(account.loginTime) }}</span></el-form-item>
+          <el-form-item label="Última hora de login"><span>{{ unix2CurrentTime(account.loginTime) }}</span></el-form-item>
         </el-col>
       </el-row>
       <el-form-item>
@@ -50,7 +50,7 @@
       </el-form-item>
     </el-form>
 
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
+    <el-dialog title="Alterar a senha" :visible.sync="dialogFormVisible">
       <el-form
         status-icon
         class="small-space"
@@ -61,38 +61,38 @@
         :rules="updatePasswordRules"
         ref="tmpPassword"
       >
-        <el-form-item label="旧密码" prop="oldPassword" required>
+        <el-form-item label="Senha Antiga" prop="oldPassword" required>
           <el-input
             type="password"
             prefix-icon="el-icon-edit"
             auto-complete="off"
-            placeholder="请输入旧密码"
+            placeholder="Por favor, digite a senha antiga"
             v-model="tmpPassword.oldPassword"
           />
         </el-form-item>
-        <el-form-item label="新密码" prop="newPassword" required>
+        <el-form-item label="Nova Senha" prop="newPassword" required>
           <el-input
             type="password"
             prefix-icon="el-icon-edit"
             auto-complete="off"
-            placeholder="请输入新密码"
+            placeholder="Por favor, digite uma nova senha"
             v-model="tmpPassword.newPassword"
           />
         </el-form-item>
-        <el-form-item label="新密码" prop="newPassword2" required>
+        <el-form-item label="Nova Senha" prop="newPassword2" required>
           <el-input
             type="password"
             prefix-icon="el-icon-edit"
             auto-complete="off"
-            placeholder="请再次输入新密码"
+            placeholder="Por favor, digite a nova senha novamente"
             v-model="tmpPassword.newPassword2"
           />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click.native.prevent="dialogFormVisible = false">取消</el-button>
-        <el-button type="danger" @click.native.prevent="$refs['tmpPassword'].resetFields()">重置</el-button>
-        <el-button type="primary" :loading="btnLoading" @click.native.prevent="updatePassword">更新</el-button>
+        <el-button @click.native.prevent="dialogFormVisible = false">Cancelar</el-button>
+        <el-button type="danger" @click.native.prevent="$refs['tmpPassword'].resetFields()">Redefinir</el-button>
+        <el-button type="primary" :loading="btnLoading" @click.native.prevent="updatePassword">Renovar</el-button>
       </div>
     </el-dialog>
   </div>
@@ -113,12 +113,12 @@ export default {
   data() {
     const validateOldPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度必须在6或以上'))
+        callback(new Error('O comprimento da senha deve ser 6 ou mais'))
       }
       // promise异步查询后端密码
       this.validateOldPassword(value).then(isValidate => {
         if (!isValidate) {
-          callback(new Error('旧密码不正确'))
+          callback(new Error('Senha antiga incorreta'))
         } else {
           callback()
         }
@@ -126,32 +126,32 @@ export default {
     }
     const validateNewPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度必须在6或以上'))
+        callback(new Error('O comprimento da senha deve ser 6 ou mais'))
       } else if (this.isOldNewPasswordSame()) {
-        callback(new Error('新旧密码不能一样'))
+        callback(new Error('Senhas antigas e novas não podem ser iguais'))
       } else {
         callback()
       }
     }
     const validateNewPassword2 = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度必须在6或以上'))
+        callback(new Error('O comprimento da senha deve ser 6 ou mais'))
       } else if (!this.isNewPasswordSame()) {
-        callback(new Error('两次输入的密码不一致'))
+        callback(new Error('As senhas digitadas duas vezes não correspondem'))
       } else {
         callback()
       }
     }
     const validateName = (rule, value, callback) => {
       if (value.length < 3) {
-        callback(new Error('账户名长度必须在3或以上'))
+        callback(new Error('O comprimento do nome da conta deve ser 3 ou mais'))
       } else {
         callback()
       }
     }
     const validateEmail = (rule, value, callback) => {
       if (!isValidateEmail(value)) {
-        callback(new Error('邮箱格式错误'))
+        callback(new Error('Erro de formato de e-mail'))
       } else {
         callback()
       }
@@ -250,12 +250,12 @@ export default {
     updateAccount(account) {
       this.btnLoading = true
       updateAccount(account).then(response => {
-        this.$message.success('更新成功')
+        this.$message.success('Atualização completa')
         this.resetToken(response.data)
         this.regainAccountDetail()
         this.btnLoading = false
       }).catch(res => {
-        this.$message.error('更新失败')
+        this.$message.error('Atualização falhou')
       })
     },
     /**

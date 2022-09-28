@@ -10,7 +10,7 @@
       label-position="left"
       label-width="0px"
     >
-      <h3 class="title">后台登录</h3>
+      <h3 class="title">login em segundo plano</h3>
       <el-form-item prop="nameOrEmail">
         <span class="svg-container svg-container_login">
           <icon-svg icon-class="name" />
@@ -19,7 +19,7 @@
           type="text"
           autocomplete="on"
           v-model="loginForm.nameOrEmail"
-          placeholder="请输入账户名或邮箱"
+          placeholder="Insira o nome da conta ou e-mail"
           @keyup.enter.native="handleLogin"
         />
       </el-form-item>
@@ -31,7 +31,7 @@
           :type="passwordType"
           autocomplete="on"
           v-model="loginForm.password"
-          placeholder="请输入密码"
+          placeholder="Por favor, digite a senha"
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click.native.prevent="showPwd">
@@ -58,14 +58,14 @@ export default {
   data() {
     const validateNameOrEmail = (rule, value, callback) => {
       if (value.length < 3) {
-        callback(new Error('账户名长度必须在3或以上'))
+        callback(new Error('O comprimento do nome da conta deve ser 3 ou mais'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度必须在6或以上'))
+        callback(new Error('O comprimento da senha deve ser 6 ou mais'))
       } else {
         callback()
       }
